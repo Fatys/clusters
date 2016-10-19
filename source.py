@@ -30,7 +30,7 @@ def load_outs(filename):
     return data
 
 
-def histogram(data=None,d_max=10000, v_max=5, c='b'):
+def histogram(data=None, d_max=10000, v_max=5, c='b'):
     hills_rad = 1859
     v_esc = 5.2
     # c = 'b'
@@ -55,3 +55,31 @@ def histogram(data=None,d_max=10000, v_max=5, c='b'):
     plt.legend()
     plt.show()
 
+
+def histogram_multi(data=None, d_max=10000, v_max=5):
+    # import matplotlib.pyplot as plt
+    # plt.interactive(False)
+    plt.figure(figsize=(10, 6))
+
+    bins = range(0, 1010, 10)
+
+    for res in data:
+        x = []
+        for point in res:
+            if (point[1] < d_max) and (point[2] < v_max):
+                x.append((point[0] * 1000))
+        ast_id = res[0][3].split('_')[0] + ' - ' + res[0][4].split('_')[0] + ' (%i)' % len(x)
+        # print('(%i points plotted)' % len(x))
+        plt.hist(x, bins=bins, alpha=0.7, label=ast_id)
+
+    plt.xlabel('t [kyr]')
+    plt.xlim(0, max(bins))
+    plt.ylabel('Number of orbital clones')
+    plt.legend()
+    title = 'Number of orbital clones with rel. distance < %i km and with rel. velocity < %.1f m/s' % (d_max, v_max)
+
+    # title2 = 'Number of orbital clones with rel. distance < %i km and with rel. velocity < %.1f m/s' % (d_max, v_max)
+    # title += title2
+    # # plt.title('Number of orbital clones with distance < %.0f km and with velocity < %.2f m/s' % (d_max, v_max))
+    plt.title(title)
+    plt.show()
